@@ -2,7 +2,19 @@
   async function teste() {
 const username = document.getElementById('username').value;
 const password = document.getElementById('password').value;
-const key = document.getElementById('key').value;
+let key = document.getElementById('key').value;
+
+// Truncate a chave para 128 caracteres, se for mais longa
+if (key.length < 32) { // 128 bits = 16 bytes
+    // Acrescente "1111111111111111" até que a chave tenha o tamanho correto
+    while (key.length < 32) {
+        key += '1111111111111111';
+    }
+        key = key.slice(0, 32); // Truncar para 16 bytes
+
+}
+
+document.getElementById('key').value = key
   const response = await fetch('/api/token/', {
     method: 'POST',
     body: JSON.stringify({username, password}),
